@@ -12,7 +12,6 @@
 #include <math.h>
 #include "cachesim.h"
 #include <stdlib.h>
-#include <time.h>
 
 int main(int argc, char *argv[])
 {
@@ -43,11 +42,11 @@ int main(int argc, char *argv[])
     FILE *fp;
 		FILE *outfp;
 
-		/*********************************************/
+   /*********************************************/
     /* Initialization  our three structs of cache*/
-		/*********************************************/
+  /*********************************************/
 
-		/* Direct-associative cache */
+/* Direct-associative cache */
     for (int i=0; i<NUM_BLOCKS; i++) {
         d_cache.valid_field[i] = 0;
         d_cache.dirty_field[i] = 0;
@@ -344,11 +343,11 @@ void n_way_set_associative_cache_access(struct n_way_set_associative_cache *cach
         if (cache->valid_field[index] && cache->dirty_field[index]) {
             /* Write the cache block back to memory */
         }
-				int filled_in_tag = 0;
+		int filled_in_tag = 0;
 				/*
-				// For each tag in the cache line, if one is empty ('0'), 
+	 // For each tag in the cache line, if one is empty ('0'), 
 				// then fill tag in at that position
-				for(int j =0; j < WAY_SIZE; j++){
+			for(int j =0; j < WAY_SIZE; j++){
 					if(cache->tag_field[index][j] == 0 ){
 							cache->tag_field[index][j] = tag;
 							filled_in_tag = 1;
@@ -411,7 +410,6 @@ void fully_associative_cache_access(struct fully_associative_cache *cache, uint6
 				cache_hit = 1;
 				break;}
 		}
-
 
 		// Else, there is a miss
 		if(cache_hit == 0){cache->misses += 1;}
