@@ -63,22 +63,22 @@ uint64_t convert_address(char memory_addr[])
     return binary;
 }
 
-void execache(int totalNumOfBlocks, int nway, int blockSize)
+void execache(int NumOfBlocks, int nway, int blockSize)
 {
-    int numberOfSets = totalNumOfBlocks / nway;
+    int numberOfSets = NumOfBlocks / nway;
     struct direct_mapped_cache
     {
-        unsigned valid_field[totalNumOfBlocks]; /* Valid field */
-        unsigned dirty_field[totalNumOfBlocks]; /* Dirty field; since we don't distinguish writes and \\
+        unsigned valid_field[NumOfBlocks]; /* Valid field */
+        unsigned dirty_field[NumOfBlocks]; /* Dirty field; since we don't distinguish writes and \\
                                              reads in this project yet, this field doesn't really matter */
-        uint64_t tag_field[totalNumOfBlocks];   /* Tag field */
+        uint64_t tag_field[NumOfBlocks];   /* Tag field */
         int hits;                                  /* Hit count */
         int misses;                                /* Miss count */
     };
     
     struct direct_mapped_cache d_cache;
     /* Initialization */
-    for (int i = 0; i < totalNumOfBlocks; i++)
+    for (int i = 0; i < NumOfBlocks; i++)
     {
         d_cache.valid_field[i] = 0;
         d_cache.dirty_field[i] = 0;
@@ -177,17 +177,17 @@ void execute_Part1()
     {
          long cacheSize = 32 * 1024;
     int NumOfBlocks = 0;
-    int ca = 0;
+    int a = 0;
     printf("Fixed 32KB Cache size, Click 1 for 16 bytes cache line size, 2 for 32 bytes cache line size, 3 for 128 bytes cache line size : \n");
-    scanf("%d", &ca);
+    scanf("%d", &a);
     int selection = 0;
     printf("Select 1 for fully associative execution, 2 for 2 way execution, 4 for 4 way execution, 8 for 8 way execution: ");
     scanf("%d", &selection);
-    switch (ca)
+    switch (a)
     {
     case 1:
         printf("\n\n ----------- STARTING EXECUTION FOR 16 BYTES cache line size ---------- \n");
-        totalNumberOfBlocks = (int)cacheSize / 16;
+        NumOfBlocks = (int)cacheSize / 16;
         switch (selection)
         {
         case 8:
@@ -230,8 +230,8 @@ void execute_Part1()
 
         break;
     case 3:
-        printf("\n\n######### STARTING EXECUTION FOR 128 BYTES cache line size ############# \n");
-        totalNumOfBlocks = (int)cacheSize / 128;
+        printf("\n\n------------------STARTING EXECUTION FOR 128 BYTES cache line size ---------------- \n");
+        NumOfBlocks = (int)cacheSize / 128;
         switch (selection)
         {
         case 8:
@@ -307,7 +307,7 @@ void execute_Part2()
         case 2:
             printf("\n\n=======STARTING EXECUTION OF  32kb cache size and 64 bytes cache line size/block size=======\n");
             cacheSize = 32 * 1024;
-            totalNumberOfBlocks = (int)cacheSize / 64;
+            NumOfBlocks = (int)cacheSize / 64;  /*calculation for number of blocks*/
             switch (selection)
             {
             case 8:
@@ -330,7 +330,7 @@ void execute_Part2()
         case 3:
             printf("\n\n====== STARTING EXECUTION OF  64kb cache size and 64 bytes cache line size/block size=======\n");
             cacheSize = 64 * 1024;
-            totalNumOfBlocks = (int)cacheSize / 64;
+            NumOfBlocks = (int)cacheSize / 64;
             switch (selection)
             {
             case 8:
