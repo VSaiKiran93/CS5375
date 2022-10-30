@@ -63,21 +63,22 @@ uint64_t convert_address(char memory_addr[])
     return binary;
 }
 
-void excecuteCache(int totalNumberOfBlocks, int nway, int blockSize)
+void execache(int totalNumOfBlocks, int nway, int blockSize)
 {
-    int numberOfSets = totalNumberOfBlocks / nway;
+    int numberOfSets = totalNumOfBlocks / nway;
     struct direct_mapped_cache
     {
-        unsigned valid_field[totalNumberOfBlocks]; /* Valid field */
-        unsigned dirty_field[totalNumberOfBlocks]; /* Dirty field; since we don't distinguish writes and \\
+        unsigned valid_field[totalNumOfBlocks]; /* Valid field */
+        unsigned dirty_field[totalNumOfBlocks]; /* Dirty field; since we don't distinguish writes and \\
                                              reads in this project yet, this field doesn't really matter */
-        uint64_t tag_field[totalNumberOfBlocks];   /* Tag field */
+        uint64_t tag_field[totalNumOfBlocks];   /* Tag field */
         int hits;                                  /* Hit count */
         int misses;                                /* Miss count */
     };
+    
     struct direct_mapped_cache d_cache;
     /* Initialization */
-    for (int i = 0; i < totalNumberOfBlocks; i++)
+    for (int i = 0; i < totalNumOfBlocks; i++)
     {
         d_cache.valid_field[i] = 0;
         d_cache.dirty_field[i] = 0;
@@ -101,8 +102,8 @@ void excecuteCache(int totalNumberOfBlocks, int nway, int blockSize)
 
         int endIndex = startIndex + nway - 1;
 
-        int hitMade = 0;
-        int isAnySpaceEmpty = 0;
+        int hit = 0;
+        int Empty_size = 0;
         int nwayTemp = nway;
         int loopIndex = startIndex;
         int i = 0;
@@ -118,7 +119,7 @@ void excecuteCache(int totalNumberOfBlocks, int nway, int blockSize)
             }
             if (d_cache.valid_field[loopIndex] == 0)
             {
-                isAnySpaceEmpty = 1;
+                Empty_space = 1;
             }
 
             loopIndex += 1;
@@ -128,7 +129,7 @@ void excecuteCache(int totalNumberOfBlocks, int nway, int blockSize)
         if (hitMade == 0)
         {
             d_cache.misses += 1;
-            if (isAnySpaceEmpty > 0)
+            if (Empty_Size > 0)
             {
                 nwayTemp = nway;
                 loopIndex = startIndex;
@@ -158,24 +159,24 @@ void excecuteCache(int totalNumberOfBlocks, int nway, int blockSize)
     printf("==================================\n");
     printf("Number of Cache Hits:    %d\n", d_cache.hits);
     printf("Number of Cache Misses:  %d\n", d_cache.misses);
-    printf("Cache Hit Rate percentage: %0.6f%%\n", ((float)d_cache.hits / (float)(d_cache.hits + d_cache.misses))*100);
-    printf("Cache Miss Rate percentage : %0.6f%%\n", ((float)d_cache.misses / (float)(d_cache.hits + d_cache.misses))*100);
+    printf("Cache Hit Rate percentage: %0.2f%%\n", ((float)d_cache.hits / (float)(d_cache.hits + d_cache.misses))*100);
+    printf("Cache Miss Rate percentage : %0.2f%%\n", ((float)d_cache.misses / (float)(d_cache.hits + d_cache.misses))*100);
     printf("\n");
     fclose(fp);
 }
 
-void startProcess(int cacheSize, int totalNumberOfBlocks, int nway, int blockSize)
+void startProcess(int cacheSize, int NumOfBlocks, int nway, int blockSize)
 {
-    excecuteCache(totalNumberOfBlocks, nway, blockSize);
+    execache(NumOfBlocks, nway, blockSize);
 }
 
-void executePart1()
+void execute_Part1()
 {
     int continueSelect = 0;
     do
     {
          long cacheSize = 32 * 1024;
-    int totalNumberOfBlocks = 0;
+    int NumOfBlocks = 0;
     int ca = 0;
     printf("Fixed 32KB Cache size, Click 1 for 16 bytes cache line size, 2 for 32 bytes cache line size, 3 for 128 bytes cache line size : \n");
     scanf("%d", &ca);
@@ -185,21 +186,21 @@ void executePart1()
     switch (ca)
     {
     case 1:
-        printf("\n\n######### STARTING EXECUTION FOR 16 BYTES cache line size ############# \n");
+        printf("\n\n ----------- STARTING EXECUTION FOR 16 BYTES cache line size ---------- \n");
         totalNumberOfBlocks = (int)cacheSize / 16;
         switch (selection)
         {
         case 8:
-            startProcess(32, totalNumberOfBlocks, 8, 16);
+            startProcess(32, NumOfBlocks, 8, 16);
             break;
         case 4:
-            startProcess(32, totalNumberOfBlocks, 4, 16);
+            startProcess(32, NumOfBlocks, 4, 16);
             break;
         case 2:
-            startProcess(32, totalNumberOfBlocks, 2, 16);
+            startProcess(32, NumOfBlocks, 2, 16);
             break;
         case 1:
-            startProcess(32, totalNumberOfBlocks, totalNumberOfBlocks, 16);
+            startProcess(32, NumOfBlocks, NumOfBlocks, 16);
             break;
         default:
             break;
@@ -207,21 +208,21 @@ void executePart1()
 
         break;
     case 2:
-        printf("\n\n######### STARTING EXECUTION FOR 32 BYTES cache line size ############# \n");
-        totalNumberOfBlocks = (int)cacheSize / 32;
+        printf("\n\n-----STARTING EXECUTION FOR 32 BYTES cache line size ------ \n");
+        NumOfBlocks = (int)cacheSize / 32;
         switch (selection)
         {
         case 8:
-            startProcess(32, totalNumberOfBlocks, 8, 32);
+            startProcess(32, NumOfBlocks, 8, 32);
             break;
         case 4:
-            startProcess(32, totalNumberOfBlocks, 4, 32);
+            startProcess(32, NumOfBlocks, 4, 32);
             break;
         case 2:
-            startProcess(32, totalNumberOfBlocks, 2, 32);
+            startProcess(32, NumOfBlocks, 2, 32);
             break;
         case 1:
-            startProcess(32, totalNumberOfBlocks, totalNumberOfBlocks, 32);
+            startProcess(32, NumOfBlocks, NumOfBlocks, 32);
             break;
         default:
             break;
@@ -230,20 +231,20 @@ void executePart1()
         break;
     case 3:
         printf("\n\n######### STARTING EXECUTION FOR 128 BYTES cache line size ############# \n");
-        totalNumberOfBlocks = (int)cacheSize / 128;
+        totalNumOfBlocks = (int)cacheSize / 128;
         switch (selection)
         {
         case 8:
-            startProcess(32, totalNumberOfBlocks, 8, 128);
+            startProcess(32, NumOfBlocks, 8, 128);
             break;
         case 4:
-            startProcess(32, totalNumberOfBlocks, 4, 128);
+            startProcess(32, NumOfBlocks, 4, 128);
             break;
         case 2:
-            startProcess(32, totalNumberOfBlocks, 2, 128);
+            startProcess(32, NumOfBlocks, 2, 128);
             break;
         case 1:
-            startProcess(32, totalNumberOfBlocks, totalNumberOfBlocks, 1628);
+            startProcess(32, NumOfBlocks, NumOfBlocks, 1628);
             break;
         default:
             break;
@@ -262,39 +263,40 @@ void executePart1()
 
    
 }
-void executePart2()
+void execute_Part2()
 {
 
      int continueSelect = 0;
     do
     {
  long cacheSize = 16 * 1024;
-    int totalNumberOfBlocks = 0;
-    int ca = 0;
+    int NumOfBlocks = 0;
+    int a = 0;
     printf("For execution over 64Bytes Cache line size ,Click 1 for 16KB Cachesize, 2 for 32KB Cachesize, 3 for 64KB Cachesize \n  \n");
     scanf("%d", &ca);
     int selection;
     printf("Select 1 for fully associative execution, 2 for 2 way execution, 4 for 4 way execution, 8 for 8 way execution: ");
     scanf("%d", &selection);
- 
-        switch (ca)
+     
+        /* Through Switch case 1 is fully associative, case 2 is 2-way, case 4 is 4-way and case 1 is 8 way associtive cache*/
+        switch (a)
         {
         case 1:
-            totalNumberOfBlocks = (int)cacheSize / 64;
+            totalNumOfBlocks = (int)cacheSize / 64;
             printf("\n\n######### STARTING EXECUTION OF  16kb cache size and 64 bytes cache line size/block size=======\n");
             switch (selection)
             {
             case 8:
-                startProcess(16, totalNumberOfBlocks, 8, 64);
+                startProcess(16, NumOfBlocks, 8, 64);
                 break;
             case 4:
-                startProcess(16, totalNumberOfBlocks, 4, 64);
+                startProcess(16, NumOfBlocks, 4, 64);
                 break;
             case 2:
-                startProcess(16, totalNumberOfBlocks, 2, 64);
+                startProcess(16, NumOfBlocks, 2, 64);
                 break;
             case 1:
-                startProcess(16, totalNumberOfBlocks, totalNumberOfBlocks, 64);
+                startProcess(16, NumOfBlocks, NumOfBlocks, 64);
                 break;
 
             default:
@@ -303,22 +305,22 @@ void executePart2()
 
             break;
         case 2:
-            printf("\n\n######### STARTING EXECUTION OF  32kb cache size and 64 bytes cache line size/block size=======\n");
+            printf("\n\n=======STARTING EXECUTION OF  32kb cache size and 64 bytes cache line size/block size=======\n");
             cacheSize = 32 * 1024;
             totalNumberOfBlocks = (int)cacheSize / 64;
             switch (selection)
             {
             case 8:
-                startProcess(32, totalNumberOfBlocks, 8, 64);
+                startProcess(32, NumOfBlocks, 8, 64);
                 break;
             case 4:
-                startProcess(32, totalNumberOfBlocks, 4, 64);
+                startProcess(32, NumOfBlocks, 4, 64);
                 break;
             case 2:
-                startProcess(32, totalNumberOfBlocks, 2, 64);
+                startProcess(32, NumOfBlocks, 2, 64);
                 break;
             case 1:
-                startProcess(32, totalNumberOfBlocks, totalNumberOfBlocks, 64);
+                startProcess(32, NumOfBlocks, NumOfBlocks, 64);
                 break;
 
             default:
@@ -326,22 +328,22 @@ void executePart2()
             }
             break;
         case 3:
-            printf("\n\n######### STARTING EXECUTION OF  64kb cache size and 64 bytes cache line size/block size=======\n");
+            printf("\n\n====== STARTING EXECUTION OF  64kb cache size and 64 bytes cache line size/block size=======\n");
             cacheSize = 64 * 1024;
-            totalNumberOfBlocks = (int)cacheSize / 64;
+            totalNumOfBlocks = (int)cacheSize / 64;
             switch (selection)
             {
             case 8:
-                startProcess(64, totalNumberOfBlocks, 8, 64);
+                startProcess(64, NumOfBlocks, 8, 64);
                 break;
             case 4:
-                startProcess(64, totalNumberOfBlocks, 4, 64);
+                startProcess(64, NumOfBlocks, 4, 64);
                 break;
             case 2:
-                startProcess(64, totalNumberOfBlocks, 2, 64);
+                startProcess(64, NumOfBlocks, 2, 64);
                 break;
             case 1:
-                startProcess(64, totalNumberOfBlocks, totalNumberOfBlocks, 64);
+                startProcess(64, NumOfBlocks, NumOfBlocks, 64);
                 break;
 
             default:
@@ -357,26 +359,25 @@ void executePart2()
         printf("Select 1 to continue , any other to exit: ");
         scanf("%d",&continueSelect);
     } while (continueSelect==1);
-
-
-   
+ 
 }
 
+/*main function where everything function is called here for execution*/
 int main(int argc, char *argv[])
 {
     trace_file_name = argv[2];
     int switchCase = 0;
-    printf("Select 1 to  execute Question 1 or 2 to Question 2 :");
+    printf("Select 1 to  execute requirement 1 and  2 to requirement 2 from part 2 requirements :");
     scanf("%d", &switchCase);
 
     switch (switchCase)
     {
     case 1:
-        executePart1();
+        execute_Part1(); /*execution of requirement 1 from the part 2 requirements*/
         break;
 
     case 2:
-        executePart2();
+        execute_Part2();  /*execution of requirement 1 from the part 2 requirements*/
         break;
     }
 }
