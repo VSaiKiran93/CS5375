@@ -70,12 +70,12 @@ uint64_t convert_address(char memory_addr[])
     }
 
 #ifdef DBG
-    printf("%s converted to %llu\n", memory_addr, binary);
+    printf("%s converted to %llu\n", memory_addr, binary);   /*print the memory address into binary */
 #endif
     return binary;
 }
 
-int isDataExistsInCacheL1(uint64_t address, int nway, struct L1Cache *l1)
+int Data_in_L1(uint64_t address, int nway, struct L1Cache *l1)
 {
     uint64_t block_addr = address >> (unsigned)log2(64);
     int setNumber = block_addr % 512;
@@ -94,7 +94,7 @@ int isDataExistsInCacheL1(uint64_t address, int nway, struct L1Cache *l1)
     }
     return 0;
 }
-int isDataExistsInCacheL2(uint64_t address, int nway, struct L2Cache *l2)
+int Data_in_L2(uint64_t address, int nway, struct L2Cache *l2)
 {
     uint64_t block_addr = address >> (unsigned)log2(64);
     int setNumber = block_addr % 2048;
@@ -113,6 +113,7 @@ int isDataExistsInCacheL2(uint64_t address, int nway, struct L2Cache *l2)
     }
     return 0;
 }
+
 void insertDataInL1Cache(uint64_t address, int nway, struct L1Cache *l1)
 {
     uint64_t block_addr = address >> (unsigned)log2(64);
@@ -121,18 +122,18 @@ void insertDataInL1Cache(uint64_t address, int nway, struct L1Cache *l1)
     int startIndex = ((int)setNumber) * nway;
     int nwayTemp = nway;
     int loopIndex = startIndex;
-    int isAnySpaceEmpty = 0;
+    int Empty_space = 0;
     int endIndex = startIndex + nway - 1;
     while (nwayTemp > 0)
     {
         if (l1->valid_field[loopIndex] == 0)
         {
-            isAnySpaceEmpty = 1;
+            Empty_space = 1;
         }
         loopIndex++;
         nwayTemp--;
     }
-    if (isAnySpaceEmpty > 0)
+    if (Empty_space > 0)
     {
         nwayTemp = nway;
         loopIndex = startIndex;
@@ -166,18 +167,18 @@ void insertDataInL2Cache(uint64_t address, int nway, struct L2Cache *l2)
     int startIndex = ((int)setNumber) * nway;
     int nwayTemp = nway;
     int loopIndex = startIndex;
-    int isAnySpaceEmpty = 0;
+    int Empty_space = 0;
     int endIndex = startIndex + nway - 1;
     while (nwayTemp > 0)
     {
         if (l2->valid_field[loopIndex] == 0)
         {
-            isAnySpaceEmpty = 1;
+            Empty_space = 1;
         }
         loopIndex++;
         nwayTemp--;
     }
-    if (isAnySpaceEmpty > 0)
+    if (Empty_space > 0)
     {
         nwayTemp = nway;
         loopIndex = startIndex;
@@ -242,7 +243,7 @@ int main(int argc, char *argv[])
         while (fgets(mem_request, 20, fp) != NULL)
         {
             address = convert_address(mem_request);
-            int dataInL1 = isDataExistsInCacheL1(address, l1nway, &l1);
+            int dataInL1 = (address, l1nway, &l1);
             if (dataInL1 == 1)
             {
                 l1.hits++;
@@ -251,7 +252,7 @@ int main(int argc, char *argv[])
             else
             {
                 l1.misses++;
-                int dataInL2 = isDataExistsInCacheL2(address, l2nway, &l2);
+                int dataInL2 = Data_in_L2(address, l2nway, &l2);
                 if (dataInL2)
                 {
                     l2.hits += 1;
@@ -259,11 +260,12 @@ int main(int argc, char *argv[])
                 else
                 {
                     l2.misses++;
-                    insertDataInL2Cache(address, l2nway, &l2);
+                    Data_in_L2(address, l2nway, &l2);
                 }
                 insertDataInL1Cache(address, l1nway, &l1); /*inserting data into L1 cache*/
             }
         }
+        
       /* Print statements for L1 cache and L2 cache*/
         printf("\n==================================\n");
         printf("Cache type:     l1\n");
