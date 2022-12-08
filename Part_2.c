@@ -273,7 +273,7 @@ void execute_Part2()
     int NumOfBlocks = 0;
     int a = 0;
     printf("For execution over 64Bytes Cache line size ,Click 1 for 16KB Cachesize, 2 for 32KB Cachesize, 3 for 64KB Cachesize \n  \n");
-    scanf("%d", &ca);
+    scanf("%d", &a);
     int selection;
     printf("Select 1 for fully associative execution, 2 for 2 way execution, 4 for 4 way execution, 8 for 8 way execution: ");
     scanf("%d", &selection);
