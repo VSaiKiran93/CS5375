@@ -114,22 +114,22 @@ void execache(int NumOfBlocks, int nway, int blockSize)
             if (d_cache.valid_field[loopIndex] && d_cache.tag_field[loopIndex] == tag)
             { /* Cache hit */
                 d_cache.hits += 1;
-                hitMade = 1;
+                hit = 1;
                 break;
             }
             if (d_cache.valid_field[loopIndex] == 0)
             {
-                Empty_space = 1;
+                Empty_size = 1;
             }
 
             loopIndex += 1;
             nwayTemp--;
         }
 
-        if (hitMade == 0)
+        if (hit == 0)
         {
             d_cache.misses += 1;
-            if (Empty_Size > 0)
+            if (Empty_size > 0)
             {
                 nwayTemp = nway;
                 loopIndex = startIndex;
