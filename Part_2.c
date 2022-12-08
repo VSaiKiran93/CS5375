@@ -282,7 +282,7 @@ void execute_Part2()
         switch (a)
         {
         case 1:
-            totalNumOfBlocks = (int)cacheSize / 64;
+            NumOfBlocks = (int)cacheSize / 64;
             printf("\n\n######### STARTING EXECUTION OF  16kb cache size and 64 bytes cache line size/block size=======\n");
             switch (selection)
             {
