@@ -86,8 +86,7 @@ uint64_t convert_address(char memory_addr[])
                 binary = (binary*16) + 10;
             }
             if(memory_addr[i] == 'b' || memory_addr[i] == 'B') {
-                                                                                                                                            89,8          46%
- binary = (binary*16) + 11;
+                binary = (binary*16) + 11;
             }
             if(memory_addr[i] == 'c' || memory_addr[i] == 'C') {
                 binary = (binary*16) + 12;
