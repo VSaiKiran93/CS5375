@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
             address = convert_address(mem_request);
             direct_mapped_cache_access(&d_cache, address);
         }
-        /Print out the results/
+        //Print out the results
         printf("\n==================================\n");
         printf("Cache type:    Direct-Mapped Cache\n");
         printf("==================================\n");
